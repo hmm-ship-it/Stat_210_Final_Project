@@ -21,7 +21,7 @@ library(readxl)
 #include data cleaning code here, with comments on what each step is doing the indicators above eval=FALSE and include=FALSE will stop the code from running again when you knit the document while still keeping the code in the document
 #use write_csv() to write your tidy data into a new csv file
 
-path <- "~/Documents/210Stat/FinalProject/project_tidy.csv"
+path <- "~/Documents/210Stat/Stat_210_Final_Project/project_tidy.csv"
 things_to_try <- c("CZ Name","State","Racial Segregation","Income Segregation","Household Income per capita", "Local Tax Rate", "Local Government Expenditures Per Capita","Labor Force Participation Rate","Social Capital Index", "Fraction Religious")
 
 Data_List <- read_excel("Manual_Cleaning.xls")
@@ -35,38 +35,57 @@ write_csv(selected_data,path)
 
 ```{r}
 #use read_csv() to import your new tidy data include any variable specifications here as needed
+#It won't knit without the path variable being placed here as well...
+path <- "~/Documents/210Stat/Stat_210_Final_Project/project_tidy.csv"
 selected_data <- read_csv(path)
-view(selected_data)
+#view(selected_data)
 ```
 
 ## Introduction
 Description of data and problem(s) you are solving.  Include data source(s) here, either through citation or link to webpage.
 
+The original data set came from a scientific investigation of social mobility among children. It measured a large number of characteristics of neighborhoods and differences in outcomes using children who changed neighborhoods as a control. I thought it would be interesting to plot some of the data as a simple investigation of how different factors might related to each other. The project can be found at https://opportunityinsights.org/data/. The dataset is named "Where is the Land of Opportunity? The Geography of Intergenerational Mobility in the United States." I learned about the dataset from http://freakonomics.com/podcast/american-dream-really-dead/ . It also includes an online lecture that has been used at Stanford & Harvard for using stats & data for economic and social problems.
+
+
 
 ## Graphic 1
-Provide a brief description of your goal with your created graphic and what it demonstrates
-```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+The goal is data exploration.
 
+Does the plot of racial segregation show any relation into local government expenditures per capita?
+The graph is of multiple localities within each of the 50 states.
+For further investigation it would be interesting to see if the various states could be grouped into larger geographical gropus to see if there are any differences by region. I wouldn't make any conclusions based just on these graphs without trying to control for other factors.
+
+```{r}
+#Lets try plotting two variables in the prepared data.
 ggplot(data=selected_data, na.rm = TRUE)+
   geom_point(mapping = aes(x = Racial.Segregation, y = Local.Government.Expenditures.Per.Capita, color=State),na.rm = FALSE)
-  #geom_point(mapping = aes(Local.Tax.Rate, Local.Government.Expenditures.Per.Capita,color = State))
-  #coord_cartesian(xlim = c(-.1,1), ylim = c(-1, 1))
+
 ```
 
-## Graphic 2 - if two people in group
-Provide a brief description of your goal with your created graphic and what it demonstrates
+## Graphic 2 - (Extra investigation)
+Lets examine something that seems more likely to be related, expenditures and tax rate. Let look at a few of the places in California
+since this is where we are at.
+
 ```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
-ggplot(data=selected_data, na.rm = TRUE)+
-  geom_point(mapping = aes(Local.Tax.Rate, Local.Government.Expenditures.Per.Capita,color = State))
+#Use the preselected data
+selected_data %>%
+  #Choose only California data points
+  filter(State == "CA") %>%
+  #Use a simple graph
+  ggplot(na.rm = TRUE)+
+    geom_point(mapping = aes(Local.Tax.Rate, Local.Government.Expenditures.Per.Capita,color = State))
 ```
 
 
-## Graphic 3 - if three people in group
-Provide a brief description of your goal with your created graphic and what it demonstrates
+## Graphic 3 - (Extra investigation)
+Lets take a look at social capital defined by google as "the networks of relationships among people who live and work in a particular society, enabling that society to function effectively.". Is there any relationship between Social Capital and Government expenditures?
+
 ```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
-ggplot(data=selected_data, na.rm = TRUE)+
-  geom_point(mapping = aes(Social.Capital.Index, Local.Government.Expenditures.Per.Capita,color = State))
+# Use the prepared data
+selected_data %>%
+  #We want to look at California data
+  filter(State == "CA") %>%
+  #Lets plot it
+  ggplot(na.rm = TRUE)+
+    geom_point(mapping = aes(Social.Capital.Index, Local.Government.Expenditures.Per.Capita,color = State))
 ```
