@@ -1,6 +1,6 @@
 ---
 title: "Final Project"
-output: html_document
+output: github_document
 author: "Timothy Hanneman"
 ---
 
