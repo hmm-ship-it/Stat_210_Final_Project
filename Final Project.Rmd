@@ -21,15 +21,21 @@ library(readxl)
 #include data cleaning code here, with comments on what each step is doing the indicators above eval=FALSE and include=FALSE will stop the code from running again when you knit the document while still keeping the code in the document
 #use write_csv() to write your tidy data into a new csv file
 
+#This is where I am storing the files
 path <- "~/Documents/210Stat/Stat_210_Final_Project/project_tidy.csv"
+#This is what it's going to selected out of the original data
 things_to_try <- c("CZ Name","State","Racial Segregation","Income Segregation","Household Income per capita", "Local Tax Rate", "Local Government Expenditures Per Capita","Labor Force Participation Rate","Social Capital Index", "Fraction Religious")
 
+#Lets load the excel file
 Data_List <- read_excel("Manual_Cleaning.xls")
 #is_tibble(Data_List)
 
+#Lets clean it up
 Data_List %>% 
   select(things_to_try) %>%
+  #This line of code fixes the titles to make them easier to select in R
   dplyr::rename_all(list(~make.names(.))) -> selected_data
+#Making the new csv file
 write_csv(selected_data,path)
 ```
 
