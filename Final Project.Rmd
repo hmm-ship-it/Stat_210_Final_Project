@@ -1,0 +1,72 @@
+---
+title: "Final Project"
+output: html_document
+author: "Timothy Hanneman"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment="")
+#install.packages("readxl")
+library(tidyverse)
+library(readxl)
+
+#library(purrr)
+#library(tibble)
+#library(dplyr)
+#library(tidyr)
+#include other packages needed here
+```
+
+```{r, eval=FALSE, include=FALSE}
+#include data cleaning code here, with comments on what each step is doing the indicators above eval=FALSE and include=FALSE will stop the code from running again when you knit the document while still keeping the code in the document
+#use write_csv() to write your tidy data into a new csv file
+
+path <- "~/Documents/210Stat/FinalProject/project_tidy.csv"
+things_to_try <- c("CZ Name","State","Racial Segregation","Income Segregation","Household Income per capita", "Local Tax Rate", "Local Government Expenditures Per Capita","Labor Force Participation Rate","Social Capital Index", "Fraction Religious")
+
+Data_List <- read_excel("Manual_Cleaning.xls")
+#is_tibble(Data_List)
+
+Data_List %>% 
+  select(things_to_try) %>%
+  dplyr::rename_all(list(~make.names(.))) -> selected_data
+write_csv(selected_data,path)
+```
+
+```{r}
+#use read_csv() to import your new tidy data include any variable specifications here as needed
+selected_data <- read_csv(path)
+view(selected_data)
+```
+
+## Introduction
+Description of data and problem(s) you are solving.  Include data source(s) here, either through citation or link to webpage.
+
+
+## Graphic 1
+Provide a brief description of your goal with your created graphic and what it demonstrates
+```{r}
+#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+
+ggplot(data=selected_data, na.rm = TRUE)+
+  geom_point(mapping = aes(x = Racial.Segregation, y = Local.Government.Expenditures.Per.Capita, color=State),na.rm = FALSE)
+  #geom_point(mapping = aes(Local.Tax.Rate, Local.Government.Expenditures.Per.Capita,color = State))
+  #coord_cartesian(xlim = c(-.1,1), ylim = c(-1, 1))
+```
+
+## Graphic 2 - if two people in group
+Provide a brief description of your goal with your created graphic and what it demonstrates
+```{r}
+#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+ggplot(data=selected_data, na.rm = TRUE)+
+  geom_point(mapping = aes(Local.Tax.Rate, Local.Government.Expenditures.Per.Capita,color = State))
+```
+
+
+## Graphic 3 - if three people in group
+Provide a brief description of your goal with your created graphic and what it demonstrates
+```{r}
+#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+ggplot(data=selected_data, na.rm = TRUE)+
+  geom_point(mapping = aes(Social.Capital.Index, Local.Government.Expenditures.Per.Capita,color = State))
+```
